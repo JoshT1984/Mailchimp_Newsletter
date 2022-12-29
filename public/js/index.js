@@ -2,13 +2,13 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const client = require("@mailchimp/mailchimp_marketing");
-// let chimpAPI = "";
-// let apiServer = "";
-// let chimpListID = "";
+let chimpAPI = process.env.chimpAPI;
+let apiServer = process.env.apiServer;
+let chimpListID = process.env.chimpListID;
 
 client.setConfig({
-  apiKey: process.env.chimpAPI,
-  server: process.env.apiServer,
+  apiKey: chimpAPI,
+  server: apiServer,
 });
 
 app.use(express.urlencoded({ extended: true }));
@@ -38,7 +38,7 @@ app.post("/", (req, res) => {
   };
 
   const run = async () => {
-    const response = await client.lists.addListMember(process.env.chimpListID, {
+    const response = await client.lists.addListMember(chimpListID, {
       email_address: subscribingUser.email,
       status: "subscribed",
       merge_fields: {
