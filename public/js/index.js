@@ -7,8 +7,8 @@ const client = require("@mailchimp/mailchimp_marketing");
 // let chimpListID = "";
 
 client.setConfig({
-  apiKey: chimpAPI,
-  server: apiServer,
+  apiKey: process.env.chimpAPI,
+  server: process.env.apiServer,
 });
 
 app.use(express.urlencoded({ extended: true }));
@@ -38,7 +38,7 @@ app.post("/", (req, res) => {
   };
 
   const run = async () => {
-    const response = await client.lists.addListMember(chimpListID, {
+    const response = await client.lists.addListMember(process.env.chimpListID, {
       email_address: subscribingUser.email,
       status: "subscribed",
       merge_fields: {
