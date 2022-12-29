@@ -30,7 +30,6 @@ app.post("/", (req, res) => {
   const firstName = req.body.first;
   const lastName = req.body.last;
   const email = req.body.email;
-  const listID = chimpListID;
 
   const subscribingUser = {
     firstName: firstName,
@@ -39,7 +38,7 @@ app.post("/", (req, res) => {
   };
 
   const run = async () => {
-    const response = await client.lists.addListMember(listID, {
+    const response = await client.lists.addListMember(chimpListID, {
       email_address: subscribingUser.email,
       status: "subscribed",
       merge_fields: {
