@@ -2,9 +2,9 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const client = require("@mailchimp/mailchimp_marketing");
-const chimpAPI = "";
-const apiServer = "";
-const chimpListID = "";
+let chimpAPI = "";
+let apiServer = "";
+let chimpListID = "";
 
 client.setConfig({
   apiKey: chimpAPI,
