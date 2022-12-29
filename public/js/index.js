@@ -2,13 +2,12 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const client = require("@mailchimp/mailchimp_marketing");
-let chimpAPI = process.env.chimpAPI;
-let apiServer = process.env.apiServer;
-let chimpListID = process.env.chimpListID;
+
+require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
 
 client.setConfig({
-  apiKey: chimpAPI,
-  server: apiServer,
+  apiKey: process.env.CHIMP_API,
+  server: process.env.API_SERVER,
 });
 
 app.use(express.urlencoded({ extended: true }));
@@ -38,14 +37,17 @@ app.post("/", (req, res) => {
   };
 
   const run = async () => {
-    const response = await client.lists.addListMember(chimpListID, {
-      email_address: subscribingUser.email,
-      status: "subscribed",
-      merge_fields: {
-        FNAME: subscribingUser.firstName,
-        LNAME: subscribingUser.lastName,
-      },
-    });
+    const response = await client.lists.addListMember(
+      process.env.CHIMP_LIST_ID,
+      {
+        email_address: subscribingUser.email,
+        status: "subscribed",
+        merge_fields: {
+          FNAME: subscribingUser.firstName,
+          LNAME: subscribingUser.lastName,
+        },
+      }
+    );
     res.sendFile(path.join(__dirname + "../../../success.html"));
   };
   run().catch((e) => {
@@ -56,3 +58,4 @@ app.post("/", (req, res) => {
 app.listen(process.env.PORT || 3000, () => {
   console.log("Server is running on port 3000");
 });
+
